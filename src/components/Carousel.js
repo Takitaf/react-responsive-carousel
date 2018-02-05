@@ -40,7 +40,8 @@ class Carousel extends Component {
         emulateTouch: PropTypes.bool,
         statusFormatter: PropTypes.func.isRequired,
         centerMode: PropTypes.bool,
-        centerSlidePercentage: PropTypes.number
+        centerSlidePercentage: PropTypes.number,
+        stopSwipePropagation: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -66,7 +67,8 @@ class Carousel extends Component {
         onChange: noop,
         statusFormatter: defaultStatusFormatter,
         centerMode: false,
-        centerSlidePercentage: 80
+        centerSlidePercentage: 80,
+        stopSwipePropagation: false,
     };
 
     constructor(props) {
@@ -291,7 +293,10 @@ class Carousel extends Component {
         });
     }
 
-    onSwipeStart = () => {
+    onSwipeStart = (e) => {
+        if (this.props.stopSwipePropagation) {
+            e.stopPropagation();
+        }
         this.setState({
             swiping: true
         });
